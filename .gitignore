@@ -1,0 +1,8 @@
+# Vim files
+*.swp
+*.swn
+*.swo
+
+# Rust build files
+/target
+**/*.rs.bk
