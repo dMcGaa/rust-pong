@@ -9,9 +9,11 @@ use piston::input::*;
 use glutin_window::GlutinWindow as Window;
 use opengl_graphics::{ GlGraphics, OpenGL };
 
+mod game_state;
+
 pub struct App {
     gl: GlGraphics, //OpenGL drawing backend
-    rotation: f64 //rotation for the square
+    state: game_state::GameState
 }
 
 impl App {
@@ -22,7 +24,7 @@ impl App {
         const RED:   [f32; 4] = [1.0, 0.0, 0.0, 1.0];
 
         let square = rectangle::square(0.0, 0.0, 50.0);
-        let rotation = self.rotation;
+        let rotation = self.state.player.rotation;
         let (x, y) = ((args.width / 2) as f64,
                       (args.height / 2) as f64);
 
@@ -40,7 +42,7 @@ impl App {
     }
     fn update(&mut self, args: &UpdateArgs) {
         // Rotate 2 radians per second.
-        self.rotation += 2.0 * args.dt;
+        self.state.player.rotation += 2.0 * args.dt;
     }
 }
 
@@ -62,7 +64,7 @@ fn main() {
     // Create a new game and run it.
     let mut app = App {
         gl: GlGraphics::new(opengl),
-        rotation: 0.0
+        state: game_state::GameState::new(0.0)
     };
 
     let mut events = Events::new(EventSettings::new());
